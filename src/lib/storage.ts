@@ -12,10 +12,16 @@ export interface TikoyData {
   status: 'active' | 'passed' | 'expired';
 }
 
+function stripUndefined<T extends object>(obj: T): Partial<T> {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([, v]) => v !== undefined)
+  ) as Partial<T>;
+}
+
 async function firestoreSet(id: string, data: TikoyData): Promise<void> {
   const { firestore } = await import('./firebase/config');
   const { doc, setDoc } = await import('firebase/firestore');
-  await setDoc(doc(firestore, 'tikoys', id), data);
+  await setDoc(doc(firestore, 'tikoys', id), stripUndefined(data));
 }
 
 async function firestoreGet(id: string): Promise<TikoyData | null> {
