@@ -111,7 +111,7 @@ export default function TikoyCreator({ previousTikoy }: TikoyCreatorProps) {
             required
             placeholder="e.g. Maria Santos"
             maxLength={60}
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-gray-900"
           />
         </div>
         <div>
@@ -123,7 +123,7 @@ export default function TikoyCreator({ previousTikoy }: TikoyCreatorProps) {
             placeholder="Wishing you health, wealth, and happiness! Huat ah!"
             rows={4}
             maxLength={300}
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 resize-none text-gray-900"
           />
           <p className="text-xs text-gray-400 text-right mt-1">{message.length}/300</p>
         </div>
