@@ -27,7 +27,7 @@ export default function PassTikoyPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-700 to-red-900">
       <nav className="flex justify-between items-center px-6 py-4 max-w-3xl mx-auto border-b border-red-600">
-        <a href="/" className="text-yellow-300 font-bold text-xl">Tikoy Pass-Around</a>
+        <Link href="/" className="text-yellow-300 font-bold text-xl">Tikoy Pass-Around</Link>
         <Link href={`/tikoy/${tikoyId}`} className="text-sm text-red-200 hover:text-white">
           ← Back to Tikoy
         </Link>
