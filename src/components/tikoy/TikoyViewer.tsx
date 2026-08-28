@@ -9,11 +9,14 @@ export default function TikoyViewer({ tikoyId }: { tikoyId: string }) {
   const [tikoy, setTikoy] = useState<TikoyData | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [expired, setExpired] = useState(false);
 
   useEffect(() => {
     getTikoy(tikoyId).then((data) => {
-      if (data) setTikoy(data);
-      else setNotFound(true);
+      if (data) {
+        setTikoy(data);
+        setExpired(data.status === 'expired' || Date.now() > data.expiresAt);
+      } else setNotFound(true);
       setLoading(false);
     });
   }, [tikoyId]);
@@ -45,7 +48,7 @@ export default function TikoyViewer({ tikoyId }: { tikoyId: string }) {
     );
   }
 
-  const isExpired = tikoy.status === 'expired' || Date.now() > tikoy.expiresAt;
+  const isExpired = expired;
   const isPassed = tikoy.status === 'passed';
 
   return (
