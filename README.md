@@ -22,9 +22,9 @@ A Filipino-Chinese New Year web app where users gift virtual Tikoy with personal
 
 ## Tech Stack
 
-- **Frontend**: Next.js 14 (App Router), TypeScript, Tailwind CSS
+- **Frontend**: Next.js 16 (App Router), TypeScript, Tailwind CSS
 - **Backend**: Firebase (Firestore, Authentication, Cloud Functions)
-- **Deployment**: Netlify (frontend), Firebase (backend)
+- **Deployment**: Cloudflare Workers via `@opennextjs/cloudflare`, Firebase (backend)
 
 ## Getting Started
 
@@ -32,7 +32,7 @@ A Filipino-Chinese New Year web app where users gift virtual Tikoy with personal
 
 - Node.js 20+ installed
 - Firebase account
-- Netlify account (for deployment)
+- Cloudflare account and Wrangler login (for deployment)
 
 ### 1. Clone and Install
 
@@ -143,34 +143,36 @@ Deploy Firestore security rules to protect your data:
    firebase deploy --only firestore:rules
    ```
 
-## Deployment to Netlify
+## Deployment to Cloudflare Workers
 
-### 1. Push to GitHub
+This app uses `@opennextjs/cloudflare`, not `@cloudflare/next-on-pages`.
+
+1. Install dependencies and log in to Wrangler:
+
+   ```bash
+   npm install
+   npx wrangler login
+   ```
+
+2. Set the Firebase values in `.env.local` for local builds. The same values are
+   declared in `wrangler.jsonc` as runtime variables, and `src/lib/firebase/config.ts`
+   falls back to the project's public web config if they are absent.
+
+3. Build and deploy:
+
+   ```bash
+   npm run deploy
+   ```
+
+The Worker is named `tikoy-pass-around` and is served from
+`https://tikoy-pass-around.gmawong10.workers.dev`. `robots.txt` and `sitemap.xml`
+are generated from `src/app/robots.ts` and `src/app/sitemap.ts`.
+
+To preview the Worker runtime locally:
 
 ```bash
-git init
-git add .
-git commit -m "Initial commit"
-git remote add origin <your-github-repo-url>
-git push -u origin main
+npm run preview
 ```
-
-### 2. Deploy on Netlify
-
-1. Go to [Netlify](https://app.netlify.com/)
-2. Click "Add new site" → "Import an existing project"
-3. Connect to your GitHub repository
-4. Configure build settings:
-   - Build command: `npm run build`
-   - Publish directory: `.next`
-   - Install the Next.js plugin automatically (Netlify will detect it)
-
-5. Add environment variables in Netlify dashboard:
-   - Go to Site settings → Environment variables
-   - Add all `NEXT_PUBLIC_FIREBASE_*` variables from `.env.local`
-
-6. Deploy!
-
 ### 3. Firebase Functions (Coming in Milestone 1)
 
 Cloud Functions for notifications will be set up later. Instructions will be added when implemented.
@@ -179,22 +181,14 @@ Cloud Functions for notifications will be set up later. Instructions will be add
 
 ```
 tikoy-pass-around/
-├── src/
-│   ├── app/                    # Next.js App Router pages
-│   ├── components/             # React components
-│   │   ├── auth/              # Authentication components
-│   │   ├── tikoy/             # Tikoy-related components
-│   │   ├── chain/             # Chain tracker components
-│   │   └── leaderboard/       # Leaderboard components
-│   ├── lib/                   # Utility libraries
-│   │   ├── firebase/          # Firebase configuration
-│   │   ├── hooks/             # Custom React hooks
-│   │   ├── utils/             # Helper functions
-│   │   └── constants/         # Constants (messages, phrases)
-│   └── types/                 # TypeScript type definitions
-├── functions/                 # Firebase Cloud Functions
-├── public/                    # Static assets
-└── netlify.toml              # Netlify configuration
+|-- src/
+|   |-- app/                    # Next.js App Router pages
+|   |-- components/             # React components
+|   |-- lib/                    # Firebase, storage, and helper code
+|   `-- types/                  # TypeScript type definitions
+|-- public/                     # Static assets
+|-- open-next.config.ts         # OpenNext Cloudflare configuration
+`-- wrangler.jsonc              # Cloudflare Worker configuration
 ```
 
 ## Development Roadmap

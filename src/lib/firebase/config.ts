@@ -2,12 +2,22 @@ import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyBSj4YA1sfDwLfgYA-RxEMKJfQP1nVqLi4',
-  authDomain: 'tikoy-pass-around.firebaseapp.com',
-  projectId: 'tikoy-pass-around',
-  storageBucket: 'tikoy-pass-around.firebasestorage.app',
-  messagingSenderId: '419582472336',
-  appId: '1:419582472336:web:092405e4185d02a98d2815',
+  apiKey:
+    process.env.NEXT_PUBLIC_FIREBASE_API_KEY ??
+    'AIzaSyBSj4YA1sfDwLfgYA-RxEMKJfQP1nVqLi4',
+  authDomain:
+    process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN ??
+    'tikoy-pass-around.firebaseapp.com',
+  projectId:
+    process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ?? 'tikoy-pass-around',
+  storageBucket:
+    process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ??
+    'tikoy-pass-around.firebasestorage.app',
+  messagingSenderId:
+    process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID ?? '419582472336',
+  appId:
+    process.env.NEXT_PUBLIC_FIREBASE_APP_ID ??
+    '1:419582472336:web:092405e4185d02a98d2815',
 };
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
